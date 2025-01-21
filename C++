@@ -1,0 +1,242 @@
+1.
+#include <iostream>
+#include <clocale> 
+#include <cstdio>  
+
+using namespace std;
+
+struct complex {
+    int re;
+    int im; 
+
+    complex(int a, int b) {
+        this->re = a;
+        this->im = b;
+    }
+
+    void Print() {
+        if (this->im >= 0)
+            printf("%d + %di\n", this->re, this->im);
+        else
+            printf("%d %di\n", this->re, this->im);
+    }
+
+    complex operator+(const complex& add) {
+        return complex(this->re + add.re, this->im + add.im);
+    }
+
+    complex operator-(const complex& sub) {
+        return complex(this->re - sub.re, this->im - sub.im);
+    }
+
+    complex operator*(const complex& mul) {
+        return complex(this->re * mul.re - this->im * mul.im,
+            this->re * mul.im + this->im * mul.re);
+    }
+
+    complex operator/(const complex& div) {
+        int denominator = div.re * div.re + div.im * div.im;
+        return complex((this->re * div.re + this->im * div.im) / denominator,
+            (this->im * div.re - this->re * div.im) / denominator);
+    }
+
+    bool operator==(const complex& other) {
+        return (this->re == other.re && this->im == other.im);
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    complex test(5, 6);
+    test.Print();
+
+    complex test1(4, -2);
+    test1.Print();
+
+    complex sumResult = test + test1;
+    printf("Сумма: ");
+    sumResult.Print();
+
+    complex subResult = test - test1;
+    printf("Разность: ");
+    subResult.Print();
+
+    complex mulResult = test * test1;
+    printf("Произведение: ");
+    mulResult.Print();
+
+    complex divResult = test / test1;
+    printf("Частное: ");
+    divResult.Print();
+
+    if (test == test1) {
+        printf("Комплексные числа равны.\n");
+    }
+    else {
+        printf("Комплексные числа не равны.\n");
+    }
+
+    return 0; 
+}
+2.
+#include <iostream>
+#include <cmath> // Для std::sqrt
+
+class Calculator {
+public:
+    double add(double a, double b) {
+        return a + b;
+    }
+
+    float add(float a, float b) {
+        return a + b;
+    }
+
+    double subtract(double a, double b) {
+        return a - b;
+    }
+
+    float subtract(float a, float b) {
+        return a - b;
+    }
+
+    double multiply(double a, double b) {
+        return a * b;
+    }
+
+    float multiply(float a, float b) {
+        return a * b;
+    }
+
+    double divide(double a, double b) {
+        if (b != 0) {
+            return a / b;
+        }
+        else {
+            throw std::invalid_argument("Division by zero");
+        }
+    }
+
+    float divide(float a, float b) {
+        if (b != 0) {
+            return a / b;
+        }
+        else {
+            throw std::invalid_argument("Division by zero");
+        }
+    }
+
+    double squareRoot(double a) {
+        if (a < 0) {
+            throw std::invalid_argument("Cannot take square root of negative number");
+        }
+        return std::sqrt(a);
+    }
+
+    float squareRoot(float a) {
+        if (a < 0) {
+            throw std::invalid_argument("Cannot take square root of negative number");
+        }
+        return std::sqrt(a);
+    }
+};
+
+int main() {
+    Calculator calc;
+
+    double a = 5.5, b = 2.2;
+    float x = 5.5f, y = 2.2f;
+
+    std::cout << "Double Add: " << calc.add(a, b) << std::endl;
+    std::cout << "Float Add: " << calc.add(x, y) << std::endl;
+
+    std::cout << "Double Subtract: " << calc.subtract(a, b) << std::endl;
+    std::cout << "Float Subtract: " << calc.subtract(x, y) << std::endl;
+
+    std::cout << "Double Multiply: " << calc.multiply(a, b) << std::endl;
+    std::cout << "Float Multiply: " << calc.multiply(x, y) << std::endl;
+
+    std::cout << "Double Divide: " << calc.divide(a, b) << std::endl;
+    std::cout << "Float Divide: " << calc.divide(x, y) << std::endl;
+
+    std::cout << "Double Square Root: " << calc.squareRoot(a) << std::endl;
+    std::cout << "Float Square Root: " << calc.squareRoot(x) << std::endl;
+
+    return 0;
+}
+3.
+#include <iostream>
+#include <iomanip> 
+#include <clocale> 
+#include <cstdio>  
+using namespace std;
+
+template <typename T>
+class Complex {
+private:
+    T real;
+    T imag; 
+
+public:
+    Complex(T r = 0, T i = 0) : real(r), imag(i) {}
+
+    void display() const {
+        printf("%.2f %c %.2fi\n", real, (imag >= 0 ? '+' : '-'), fabs(imag));
+    }
+
+    Complex operator+(const Complex& other) const {
+        return Complex(real + other.real, imag + other.imag);
+    }
+
+    Complex operator-(const Complex& other) const {
+        return Complex(real - other.real, imag - other.imag);
+    }
+
+    Complex operator*(const Complex& other) const {
+        return Complex(real * other.real - imag * other.imag, real * other.imag + imag * other.real);
+    }
+
+    Complex operator/(const Complex& other) const {
+        T denominator = other.real * other.real + other.imag * other.imag;
+        return Complex((real * other.real + imag * other.imag) / denominator,
+            (imag * other.real - real * other.imag) / denominator);
+    }
+
+    bool operator==(const Complex& other) const {
+        return (real == other.real && imag == other.imag);
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    Complex<double> c1(3.0, 4.0);
+    Complex<double> c2(1.0, 2.0);
+
+    printf("Комплексное число 1: ");
+    c1.display();
+
+    printf("Комплексное число 2: ");
+    c2.display();
+
+    Complex<double> sum = c1 + c2;
+    printf("Сумма: ");
+    sum.display();
+
+    Complex<double> difference = c1 - c2;
+    printf("Разность: ");
+    difference.display();
+
+    Complex<double> product = c1 * c2;
+    printf("Произведение: ");
+    product.display();
+
+    Complex<double> quotient = c1 / c2;
+    printf("Частное: ");
+    quotient.display();
+
+    printf("Равенство: %s\n", (c1 == c2 ? "Да" : "Нет"));
+
+    return 0; 
+}
