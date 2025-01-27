@@ -1,100 +1,36 @@
-1.
 #include <iostream>
-#include <locale>
+#include <cstdlib> 
+#include <ctime>  
+#include <algorithm> 
+#include <clocale> 
 
-int main() {
-    setlocale(LC_ALL, "Russian");
-
-    double a, b, c;
-
-    std::cout << "Введите три действительных числа: ";
-    std::cin >> a >> b >> c;
-
-    if (a >= 0) {
-        a = a * a;
-    }
-    if (b >= 0) {
-        b = b * b;
-    }
-    if (c >= 0) {
-        c = c * c;
-    }
-
-    std::cout << "Результаты: " << a << ", " << b << ", " << c << std::endl;
-
-    return 0;
-}
-2.
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <locale>
+using namespace std;
 
 int main() {
     setlocale(LC_ALL, "Russian");
 
     int n;
-    std::cout << "Введите количество целых чисел: ";
-    std::cin >> n;
 
-    std::vector<int> numbers(n);
-    std::cout << "Введите " << n << " целых чисел: ";
+    cout << "Введите размер динамического массива: ";
+    cin >> n;
+
+    int* array = new int[n];
+
+    srand(static_cast<unsigned int>(time(0)));
+
     for (int i = 0; i < n; ++i) {
-        std::cin >> numbers[i];
+        array[i] = rand() % 100;
     }
 
-    std::unordered_map<int, int> frequency;
+    sort(array, array + n);
 
-    for (int num : numbers) {
-        frequency[num]++;
-    }
-
-    int uniqueDuplicates = 0;
-    for (const auto& pair : frequency) {
-        if (pair.second > 1) {
-            uniqueDuplicates++;
-        }
-    }
-
-    std::cout << "Количество чисел, которые встречаются более одного раза: " << uniqueDuplicates << std::endl;
-
-    return 0;
-}
-3.
-#include <iostream>
-#include <vector>
-#include <locale>
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-
-    int n;
-    std::cout << "Введите размер матрицы n: ";
-    std::cin >> n;
-
-    std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
-
-    std::cout << "Введите элементы матрицы:" << std::endl;
+    cout << "Отсортированный массив: ";
     for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            std::cin >> matrix[i][j];
-        }
+        cout << array[i] << " ";
     }
+    cout << endl;
 
-    std::cout << "Номера строк, все элементы которых - нули:" << std::endl;
-    for (int i = 0; i < n; ++i) {
-        bool allZeros = true;
-        for (int j = 0; j < n; ++j) {
-            if (matrix[i][j] != 0) {
-                allZeros = false;
-                break;
-            }
-        }
-        if (allZeros) {
-            std::cout << i + 1 << " ";
-        }
-    }
+    delete[] array;
 
-    std::cout << std::endl;
     return 0;
 }
