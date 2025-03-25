@@ -1,76 +1,45 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 using namespace std;
 
-class CombatUnit {
-private:
-    int health;
-    int damage;
-    string unitType;
-
-    static int totalHealth; 
-    static int totalDamage; 
-
-public:
-    CombatUnit(int h, int d, const string& type) : health(h), damage(d), unitType(type) {
-        totalHealth += health;
-        totalDamage += damage;
+double divide(double a, double b) {
+    if (b == 0) {
+        throw runtime_error("Ошибка: Деление на ноль!");
     }
-
-    ~CombatUnit() {
-        totalHealth -= health;
-        totalDamage -= damage;
-    }
-
-    static int getTotalHealth() {
-        return totalHealth;
-    }
-
-    static int getTotalDamage() {
-        return totalDamage;
-    }
-
-    int getHealth() const {
-        return health;
-    }
-
-    int getDamage() const {
-        return damage;
-    }
-
-    string getUnitType() const {
-        return unitType;
-    }
-
-    void setHealth(int h) {
-        totalHealth -= health; 
-        health = h;
-        totalHealth += health; 
-    }
-
-    void setDamage(int d) {
-        totalDamage -= damage; 
-        damage = d;
-        totalDamage += damage;
-    }
-};
-
-int CombatUnit::totalHealth = 0;
-int CombatUnit::totalDamage = 0;
+    return a / b;
+}
 
 int main() {
-    CombatUnit unit1(100, 20, "Солдат");
-    CombatUnit unit2(150, 30, "Танк");
+    double num1, num2;
+    string input;
 
-    cout << "Общее здоровье армии: " << CombatUnit::getTotalHealth() << endl;
-    cout << "Общая мощь армии: " << CombatUnit::getTotalDamage() << endl;
+    cout << "Введите первое число: ";
+    cin >> input;
+    try {
+        num1 = stod(input); 
+    } catch (const invalid_argument&) {
+        cout << "Ошибка: Некорректные данные для первого числа!" << endl;
+        return 1;
+    }
 
-    unit1.setHealth(120);
-    unit2.setDamage(40);
+    cout << "Введите второе число: ";
+    cin >> input;
+    try {
+        num2 = stod(input);
+    } catch (const invalid_argument&) {
+        cout << "Ошибка: Некорректные данные для второго числа!" << endl;
+        return 1;
+    }
 
-    cout << "После изменений:" << endl;
-    cout << "Общее здоровье армии: " << CombatUnit::getTotalHealth() << endl;
-    cout << "Общая мощь армии: " << CombatUnit::getTotalDamage() << endl;
+    try {
+        double result = divide(num1, num2);
+        cout << "Результат деления: " << result << endl;
+    } catch (const runtime_error& e) {
+        cout << e.what() << endl;
+    } catch (...) {
+        cout << "Произошла неожиданная ошибка!" << endl;
+    }
 
 }
