@@ -1,60 +1,76 @@
-1.
 #include <iostream>
-#include <vector>
-
-using namespace std;
-
-int main() {
-    int N;
-    cout << "Введите размер вектора: ";
-    cin >> N;
-
-    vector<int> numbers;
-
-    cout << "Введите " << N << " чисел:" << endl;
-    for (int i = 0; i < N; ++i) {
-        int num;
-        cin >> num;
-        numbers.push_back(num);
-    }
-
-    cout << "Числа в обратном порядке: ";
-    for (int i = N - 1; i >= 0; --i) {
-        cout << numbers[i] << " ";
-    }
-    cout << endl;
-
-}
-2.
-#include <iostream>
-#include <vector>
 #include <string>
 
 using namespace std;
 
+class CombatUnit {
+private:
+    int health;
+    int damage;
+    string unitType;
+
+    static int totalHealth; 
+    static int totalDamage; 
+
+public:
+    CombatUnit(int h, int d, const string& type) : health(h), damage(d), unitType(type) {
+        totalHealth += health;
+        totalDamage += damage;
+    }
+
+    ~CombatUnit() {
+        totalHealth -= health;
+        totalDamage -= damage;
+    }
+
+    static int getTotalHealth() {
+        return totalHealth;
+    }
+
+    static int getTotalDamage() {
+        return totalDamage;
+    }
+
+    int getHealth() const {
+        return health;
+    }
+
+    int getDamage() const {
+        return damage;
+    }
+
+    string getUnitType() const {
+        return unitType;
+    }
+
+    void setHealth(int h) {
+        totalHealth -= health; 
+        health = h;
+        totalHealth += health; 
+    }
+
+    void setDamage(int d) {
+        totalDamage -= damage; 
+        damage = d;
+        totalDamage += damage;
+    }
+};
+
+int CombatUnit::totalHealth = 0;
+int CombatUnit::totalDamage = 0;
+
 int main() {
-    int N;
-    cout << "Введите размер вектора: ";
-    cin >> N;
-    cin.ignore(); 
+    CombatUnit unit1(100, 20, "Солдат");
+    CombatUnit unit2(150, 30, "Танк");
 
-    vector<string> strings;
+    cout << "Общее здоровье армии: " << CombatUnit::getTotalHealth() << endl;
+    cout << "Общая мощь армии: " << CombatUnit::getTotalDamage() << endl;
 
-    cout << "Введите " << N << " строк:" << endl;
-    for (int i = 0; i < N; ++i) {
-        string str;
-        getline(cin, str);
-        strings.push_back(str);
-    }
+    unit1.setHealth(120);
+    unit2.setDamage(40);
 
-    cout << "Введите еще одну строку для добавления в вектор: ";
-    string additionalString;
-    getline(cin, additionalString);
-    strings.push_back(additionalString);
-
-    cout << "Содержимое вектора:" << endl;
-    for (const auto& str : strings) {
-        cout << str << endl;
-    }
+    cout << "После изменений:" << endl;
+    cout << "Общее здоровье армии: " << CombatUnit::getTotalHealth() << endl;
+    cout << "Общая мощь армии: " << CombatUnit::getTotalDamage() << endl;
 
 }
