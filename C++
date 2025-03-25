@@ -1,116 +1,68 @@
-1.
 #include <iostream>
-#include <clocale> 
+
 using namespace std;
 
-int* mergeArrays(int* arr1, int size1, int* arr2, int size2, int& newSize) {
-    newSize = size1 + size2;
+class Point {
+private:
+    double x;
+    double y;
+    double z;
 
-    int* mergedArray = new int[newSize];
+public:
+    Point(double x = 0, double y = 0, double z = 0) : x(x), y(y), z(z) {}
 
-    for (int i = 0; i < size1; ++i) {
-        mergedArray[i] = arr1[i];
+    bool operator==(const Point& other) const {
+        return (x == other.x) && (y == other.y) && (z == other.z);
     }
 
-    for (int i = 0; i < size2; ++i) {
-        mergedArray[size1 + i] = arr2[i];
+    bool operator!=(const Point& other) const {
+        return !(*this == other);
     }
 
-    return mergedArray; 
-}
+    Point operator-(const Point& other) const {
+        return Point(x - other.x, y - other.y, z - other.z);
+    }
+
+    Point& operator++() {
+        x++;
+        y++;
+        z++;
+        return *this;
+    }
+
+    Point operator++(int) {
+        Point temp = *this;
+        ++(*this);
+        return temp;
+    }
+
+    void display() const {
+        cout << "Point(" << x << ", " << y << ", " << z << ")" << endl;
+    }
+};
 
 int main() {
-    setlocale(LC_ALL, "Russian");
+    Point p1(1.0, 2.0, 3.0);
+    Point p2(4.0, 5.0, 6.0);
+    Point p3(1.0, 2.0, 3.0);
 
-    int size1, size2;
-
-    cout << "Введите размер первого массива: ";
-    cin >> size1;
-    cout << "Введите размер второго массива: ";
-    cin >> size2;
-
-    int* arr1 = new int[size1];
-    int* arr2 = new int[size2];
-
-    cout << "Введите элементы первого массива:" << endl;
-    for (int i = 0; i < size1; ++i) {
-        cin >> arr1[i];
+    if (p1 == p3) {
+        cout << "p1 и p3 равны." << endl;
+    } else {
+        cout << "p1 и p3 не равны." << endl;
     }
 
-    cout << "Введите элементы второго массива:" << endl;
-    for (int i = 0; i < size2; ++i) {
-        cin >> arr2[i];
-    }
+    Point p4 = p2 - p1;
+    cout << "p2 - p1 = ";
+    p4.display();
 
-    int newSize;
-    int* mergedArray = mergeArrays(arr1, size1, arr2, size2, newSize);
+    cout << "p1 до инкремента: ";
+    p1.display();
+    ++p1;
+    cout << "p1 после префиксного инкремента: ";
+    p1.display();
+    p1++;
+    cout << "p1 после постфиксного инкремента: ";
+    p1.display();
 
-    cout << "Результирующий массив после слияния:" << endl;
-    for (int i = 0; i < newSize; ++i) {
-        cout << mergedArray[i] << " ";
-    }
-    cout << endl;
-
-    delete[] arr1;
-    delete[] arr2;
-    delete[] mergedArray;
-
-    return 0; 
-}
-2.
-#include <iostream>
-#include <clocale> 
-using namespace std;
-
-int calculateSum(int* arr, int size) {
-    int sum = 0;
-    for (int i = 0; i < size; ++i) {
-        sum += arr[i];
-    }
-    return sum;
-}
-
-int* getArrayWithMaxSum(int* arr1, int size1, int* arr2, int size2) {
-    int sum1 = calculateSum(arr1, size1);
-    int sum2 = calculateSum(arr2, size2);
-
-    return (sum1 >= sum2) ? arr1 : arr2;
-}
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-
-    int size1, size2;
-
-    cout << "Введите размер первого массива: ";
-    cin >> size1;
-    cout << "Введите размер второго массива: ";
-    cin >> size2;
-
-    int* arr1 = new int[size1];
-    int* arr2 = new int[size2];
-
-    cout << "Введите элементы первого массива:" << endl;
-    for (int i = 0; i < size1; ++i) {
-        cin >> arr1[i];
-    }
-
-    cout << "Введите элементы второго массива:" << endl;
-    for (int i = 0; i < size2; ++i) {
-        cin >> arr2[i];
-    }
-
-    int* maxSumArray = getArrayWithMaxSum(arr1, size1, arr2, size2);
-
-    cout << "Массив с наибольшей суммой элементов:" << endl;
-    int maxSize = (calculateSum(arr1, size1) >= calculateSum(arr2, size2)) ? size1 : size2;
-    for (int i = 0; i < maxSize; ++i) {
-        cout << maxSumArray[i] << " ";
-    }
-    cout << endl;
-
-    delete[] arr1;
-    delete[] arr2;
-
-    return 0; 
 }
